@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -56,15 +57,41 @@ const Link = styled.span`
 `;
 
 const Login = () => {
+  // const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      axios
+        .post("/auth/login", {
+          email,
+          password,
+        })
+        .then((res) => console.log(res.data));
+    } catch (error) {}
+  };
+
   return (
     <Container>
       <SignIn>
         <Title>Log in</Title>
         <SubTitle>Welcome back to Erudite!</SubTitle>
-        <Input placeholder="username" />
-        <Input placeholder="email" />
-        <Input type="password" placeholder="password" />
-        <Button>Sign up</Button>
+        {/* <Input placeholder="Name" onChange={(e) => setName(e.target.value)} /> */}
+        <Input
+          type="email"
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <Input
+          type="password"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <Button onClick={handleLogin}>Log in</Button>
       </SignIn>
     </Container>
   );

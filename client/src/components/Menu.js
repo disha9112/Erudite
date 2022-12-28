@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import HomeIcon from "@mui/icons-material/Home";
+import WhatshotIcon from "@mui/icons-material/Whatshot";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import LoginIcon from "@mui/icons-material/Login";
 import PsychologyIcon from "@mui/icons-material/Psychology";
 import ComputerIcon from "@mui/icons-material/Computer";
@@ -82,8 +84,20 @@ const Menu = ({ theme, setTheme }) => {
         </StyledLink>
         <StyledLink to="/">
           <Item>
-            <HomeIcon color="#ff3465" />
+            <HomeIcon />
             Home
+          </Item>
+        </StyledLink>
+        <StyledLink to="/trending">
+          <Item>
+            <WhatshotIcon />
+            Trending
+          </Item>
+        </StyledLink>
+        <StyledLink to="/followersVideos">
+          <Item>
+            <BookmarkIcon />
+            Following
           </Item>
         </StyledLink>
         <StyledLink to="/login">
@@ -103,7 +117,7 @@ const Menu = ({ theme, setTheme }) => {
         </Item>
         <Item>
           <CloudIcon />
-          Cloud Computing
+          Cloud
         </Item>
         <Item>
           <DatasetIcon />
@@ -134,10 +148,10 @@ const Menu = ({ theme, setTheme }) => {
           <ToggleOnIcon />
           Toggle Theme
         </Item>
-        <Item>
+        {/* <Item>
           <BugReportIcon />
           Report
-        </Item>
+        </Item> */}
       </Wrapper>
     </Container>
   );

@@ -27,9 +27,9 @@ const video = new Schema(
       type: Number,
       default: 0,
     },
-    tags: {
-      type: [String],
-      default: [],
+    tag: {
+      type: String,
+      required: true,
     },
     likes: {
       type: [String],

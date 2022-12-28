@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
 import Card from "../components/Card";
 
@@ -10,23 +11,23 @@ const Container = styled.div`
   color: ${({ theme }) => theme.text};
 `;
 
-const Home = () => {
+const Home = ({ type }) => {
+  const [randomVideos, setRandomVideos] = useState([]);
+
+  useEffect(() => {
+    const fetchRandomVideos = async () => {
+      axios
+        .get(`/videos/${type}`)
+        .then((res) => setRandomVideos(res.data.videos));
+    };
+    fetchRandomVideos();
+  }, [type]);
+
   return (
     <Container>
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
+      {randomVideos.map((video) => (
+        <Card key={video._id} video={video} />
+      ))}
     </Container>
   );
 };

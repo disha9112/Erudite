@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import moment from "moment";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -54,16 +56,30 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const Card = () => {
+const Card = ({ type, video }) => {
+  const [channel, setChannel] = useState([]);
+
+  useEffect(() => {
+    const fetchChannel = async () => {
+      axios
+        .get(`/users/find/${video.userId}`)
+        .then((res) => setChannel(res.data.fetchedUser));
+    };
+    fetchChannel();
+  }, [video.userId]);
+
   return (
     <StyledLink to="/video/test">
       <Container>
-        <Thumbnail src="https://images.unsplash.com/photo-1661956602139-ec64991b8b16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1930&q=80" />
+        <Thumbnail type={type} src={video.thumbnail} />
         <Details>
-          <Profile src="https://i.pinimg.com/originals/4d/b8/3d/4db83d1b757657acf5edc8bd66e50abf.jpg" />
+          <Profile type={type} src={channel.profilePic} />
           <Description>
-            <Title>Test Video</Title>
-            <Channel>Test Channel • 150,000 views</Channel>
+            <Title>{video.title}</Title>
+            <Channel>
+              {channel.name} • {video.views} views •{" "}
+              {moment(video.createdAt).fromNow()}
+            </Channel>
           </Description>
         </Details>
       </Container>

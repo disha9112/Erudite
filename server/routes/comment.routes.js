@@ -1,14 +1,22 @@
 const express = require("express");
 const router = express.Router();
 
-// const { signup } = require("../controllers/auth/signup");
-// const { login } = require("../controllers/auth/login");
-// const { getUser } = require("../controllers/auth/getUser");
+const {
+  createComment,
+} = require("../controllers/comment/createComment.controller");
+const {
+  deleteComment,
+} = require("../controllers/comment/deleteComment.controller");
+const {
+  getComments,
+} = require("../controllers/comment/getComments.controller");
+// const { updateComment } = require("../controllers/comment/updateComment.controller");
 
-// const validated = require("../middlewares/validated");
+const verifyToken = require("../middlewares/auth.middleware");
 
-// router.post("/signup", signup);
-// router.post("/login", login);
-// router.get("/getUser", validated, getUser);
+router.post("/", verifyToken, createComment);
+router.delete("/:id", verifyToken, deleteComment);
+router.get("/:videoId", getComments);
+// router.put("/:id", verifyToken, updateComment);
 
 module.exports = router;
