@@ -93,7 +93,7 @@ const Header = () => {
             {/* <Item>
               <VideoCallIcon />
             </Item> */}
-            <ProfilePic />
+            <ProfilePic src={currentUser.profilePic} />
             {currentUser.name}
           </User>
         ) : (

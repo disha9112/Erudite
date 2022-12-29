@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RemoveScrollBar } from "react-remove-scroll-bar";
 import Comment from "./Comment";
+import axios from "axios";
 
 const Container = styled.div``;
 const Wrapper = styled.div`
@@ -31,34 +33,35 @@ const Hr = styled.hr`
   margin: 15px 0;
 `;
 
-const Comments = () => {
+const Comments = ({ videoId }) => {
+  const { currentUser } = useSelector((state) => state.user);
+
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        await axios
+          .get(`/comments/${videoId}`)
+          .then((res) => setComments(res.data.comments));
+        console.log(comments);
+      } catch (err) {}
+    };
+    fetchComments();
+  }, [videoId]);
+
   return (
     <Container>
       <NewComment>
-        <ProfilePic src="https://i.pinimg.com/originals/4d/b8/3d/4db83d1b757657acf5edc8bd66e50abf.jpg" />
+        <ProfilePic src={currentUser.profilePic} />
         <Input placeholder="Add a new comment..." />
       </NewComment>
       <Hr />
       {/* <RemoveScrollBar /> */}
       <Wrapper>
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
+        {comments.map((comment) => (
+          <Comment key={comment._id} comment={comment} />
+        ))}
       </Wrapper>
     </Container>
   );

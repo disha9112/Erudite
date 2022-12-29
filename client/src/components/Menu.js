@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -21,6 +21,7 @@ import VideoCallIcon from "@mui/icons-material/VideoCall";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import { useSelector } from "react-redux";
 import { logOut } from "../redux/userSlice";
+import Create from "./Create";
 
 const Container = styled.div`
   flex: 1;
@@ -96,12 +97,15 @@ const Button = styled.button`
 const Menu = ({ theme, setTheme }) => {
   const navigate = useNavigate();
 
+  const [open, setOpen] = useState(false);
+
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const handleLogout = async (e) => {
     e.preventDefault();
     dispatch(logOut({}));
+    navigate("/");
 
     //   try {
     //     axios
@@ -117,92 +121,95 @@ const Menu = ({ theme, setTheme }) => {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <StyledLink to="/">
-          <Brand>
-            <Span>E</Span>RUDITE
-          </Brand>
-          <Tagline>Learn everyday!</Tagline>
-        </StyledLink>
-        <StyledLink to="/">
-          <Item>
-            <HomeIcon />
-            Home
-          </Item>
-        </StyledLink>
-        <StyledLink to="/trending">
-          <Item>
-            <WhatshotIcon />
-            Trending
-          </Item>
-        </StyledLink>
-        <StyledLink to="/following">
-          <Item>
-            <BookmarkIcon />
-            Following
-          </Item>
-        </StyledLink>
-        <Hr />
-        <Item>
-          <PsychologyIcon />
-          AI/ML
-        </Item>
-        <Item>
-          <CurrencyBitcoinIcon />
-          Blockchain
-        </Item>
-        <Item>
-          <CloudIcon />
-          Cloud
-        </Item>
-        <Item>
-          <DatasetIcon />
-          Data Science
-        </Item>
-        <Item>
-          <ComputerIcon />
-          Development
-        </Item>
-        <Item>
-          <RssFeedIcon />
-          IoT
-        </Item>
-        <Item>
-          <CodeIcon />
-          Programming
-        </Item>
-        <Item>
-          <SecurityIcon />
-          Security
-        </Item>
-        <Hr />
-        {!currentUser ? (
-          ""
-        ) : (
-          <div>
-            {/* <StyledLink to="/login"> */}
-            <Button onClick={handleLogout}>
-              <LogoutIcon />
-              Logout
-            </Button>
-            {/* </StyledLink> */}
+    <>
+      <Container>
+        <Wrapper>
+          <StyledLink to="/">
+            <Brand>
+              <Span>E</Span>RUDITE
+            </Brand>
+            <Tagline>Learn everyday!</Tagline>
+          </StyledLink>
+          <StyledLink to="/">
             <Item>
-              <VideoCallIcon />
-              Create
+              <HomeIcon />
+              Home
             </Item>
-          </div>
-        )}
-        <Item onClick={() => setTheme(!theme)}>
-          <ToggleOnIcon />
-          Toggle Theme
-        </Item>
-        {/* <Item>
+          </StyledLink>
+          <StyledLink to="/trending">
+            <Item>
+              <WhatshotIcon />
+              Trending
+            </Item>
+          </StyledLink>
+          <StyledLink to="/following">
+            <Item>
+              <BookmarkIcon />
+              Following
+            </Item>
+          </StyledLink>
+          <Hr />
+          <Item>
+            <PsychologyIcon />
+            AI/ML
+          </Item>
+          <Item>
+            <CurrencyBitcoinIcon />
+            Blockchain
+          </Item>
+          <Item>
+            <CloudIcon />
+            Cloud
+          </Item>
+          <Item>
+            <DatasetIcon />
+            Data Science
+          </Item>
+          <Item>
+            <ComputerIcon />
+            Development
+          </Item>
+          <Item>
+            <RssFeedIcon />
+            IoT
+          </Item>
+          <Item>
+            <CodeIcon />
+            Programming
+          </Item>
+          <Item>
+            <SecurityIcon />
+            Security
+          </Item>
+          <Hr />
+          {!currentUser ? (
+            ""
+          ) : (
+            <div>
+              {/* <StyledLink to="/login"> */}
+              <Button onClick={handleLogout}>
+                <LogoutIcon />
+                Logout
+              </Button>
+              {/* </StyledLink> */}
+              <Item onClick={() => setOpen(true)}>
+                <VideoCallIcon />
+                Create
+              </Item>
+            </div>
+          )}
+          <Item onClick={() => setTheme(!theme)}>
+            <ToggleOnIcon />
+            Toggle Theme
+          </Item>
+          {/* <Item>
           <BugReportIcon />
           Report
         </Item> */}
-      </Wrapper>
-    </Container>
+        </Wrapper>
+      </Container>
+      {open && <Create setOpen={setOpen} />}
+    </>
   );
 };
 

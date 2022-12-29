@@ -3,12 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import styled from "styled-components";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import LinkIcon from "@mui/icons-material/Link";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import Comments from "../components/Comments";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import { fetchSuccess } from "../redux/videoSlice";
+import { follow } from "../redux/userSlice";
+import { fetchSuccess, like } from "../redux/videoSlice";
 
 const Container = styled.div`
   display: flex;
@@ -91,38 +94,59 @@ const Image = styled.img`
 const Span = styled.span`
   color: #ff3465;
 `;
+const VideoFrame = styled.video`
+  max-height: 720px;
+  width: 100%;
+  object-fit: cover;
+`;
 
 const Video = () => {
-  // const { currentUser } = useSelector((state) => state.user);
-  // const { currentVideo } = useSelector((state) => state.video);
-  // const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
+  const { currentVideo } = useSelector((state) => state.video);
+  const dispatch = useDispatch();
 
   const path = useLocation().pathname.split("/")[2];
   console.log(path);
-
-  const [video, setVideo] = useState({});
   const [channel, setChannel] = useState({});
+
+  const handleLike = async () => {
+    if (currentUser._id) {
+      await axios
+        .put(`/users/like/${currentVideo._id}`)
+        .then(() => dispatch(like(currentUser._id)));
+    }
+  };
+  const handleFollow = async () => {
+    currentUser.followedUsers.includes(channel._id)
+      ? await axios
+          .put(`/users/unfollow/${channel._id}`)
+          .then(() => dispatch(follow(channel._id)))
+      : await axios
+          .put(`/users/follow/${channel._id}`)
+          .then(() => dispatch(follow(channel._id)));
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const videoRes = await axios.get(`/videos/find/${path}`);
-        setVideo(videoRes.data.fetchedVideo);
+        // setVideo(videoRes.data.fetchedVideo);
         const channelRes = await axios.get(
           `/users/find/${videoRes.data.fetchedVideo.userId}`
         );
         setChannel(channelRes.data.fetchedUser);
-        // dispatch(fetchSuccess(videoRes.fetchedVideo.data));
+        dispatch(fetchSuccess(videoRes.data.fetchedVideo));
       } catch (err) {}
     };
     fetchData();
-  }, [path]);
+  }, [path, dispatch]);
 
   return (
     <Container>
       <Content>
         <VideoWrapper>
-          <iframe
+          <VideoFrame src={currentVideo.videoUrl} />
+          {/* <iframe
             width="100%"
             height="350px"
             // src={video.videoUrl}
@@ -131,22 +155,49 @@ const Video = () => {
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
-          ></iframe>
+          ></iframe> */}
         </VideoWrapper>
-        <Title>{video.title}</Title>
+        <Title>{currentVideo.title}</Title>
         <Details>
           <Info>
-            {video.views} views • {moment(video.createdAt).fromNow()}
+            {currentVideo.views} views •{" "}
+            {moment(currentVideo.createdAt).fromNow()}
           </Info>
           <Buttons>
-            <Button>
-              <FavoriteBorderIcon /> {video.likes?.length}
-            </Button>
+            {currentUser === null ? (
+              <Button>
+                {currentVideo.likes.length}
+                <FavoriteBorderIcon />
+              </Button>
+            ) : (
+              <Button onClick={handleLike}>
+                {currentVideo.likes?.includes(currentUser._id) ? (
+                  <FavoriteIcon />
+                ) : (
+                  <FavoriteBorderIcon />
+                )}{" "}
+                {currentVideo.likes?.length}
+              </Button>
+            )}
+            {/* <Button onClick={handleLike}>
+              {currentVideo.likes?.includes(currentUser._id) ? (
+                <FavoriteIcon />
+              ) : (
+                <FavoriteBorderIcon />
+              )}{" "}
+              {currentVideo.likes?.length}
+            </Button> */}
             <Button>
               <LinkIcon />
             </Button>
             <Button>
-              <BookmarkIcon />
+              {currentUser === null ? (
+                <BookmarkBorderIcon />
+              ) : currentUser.followedUsers?.includes(channel._id) ? (
+                <BookmarkIcon />
+              ) : (
+                <BookmarkBorderIcon onClick={handleFollow} />
+              )}
             </Button>
           </Buttons>
         </Details>
@@ -161,10 +212,10 @@ const Video = () => {
             </ChannelDetails>
           </ChannelInfo>
         </Channel>
-        <VideoInfo>{video.info}</VideoInfo>
+        <VideoInfo>{currentVideo.info}</VideoInfo>
       </Content>
       <CommentsContainer>
-        <Comments></Comments>
+        <Comments videoId={currentVideo._id} />
       </CommentsContainer>
     </Container>
   );

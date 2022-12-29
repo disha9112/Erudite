@@ -21,9 +21,15 @@ export const videoSlice = createSlice({
       state.loading = false;
       state.error = true;
     },
+    like: (state, action) => {
+      if (!state.currentVideo.likes.includes(action.payload)) {
+        state.currentVideo.likes.push(action.payload);
+      }
+    },
   },
 });
 
-export const { fetchStart, fetchSuccess, fetchFailure } = videoSlice.actions;
+export const { fetchStart, fetchSuccess, fetchFailure, like } =
+  videoSlice.actions;
 
 export default videoSlice.reducer;

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import moment from "moment";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -28,20 +30,26 @@ const Date = styled.span`
 `;
 const Content = styled.div``;
 
-const Comment = () => {
+const Comment = ({ comment }) => {
+  const [channel, setChannel] = useState({});
+
+  useEffect(() => {
+    const fetchCommentDetails = async () => {
+      await axios
+        .get(`/users/find/${comment.userId}`)
+        .then((res) => setChannel(res.data.fetchedUser));
+    };
+    fetchCommentDetails();
+  }, [comment.userId]);
+
   return (
     <Container>
-      <ProfilePic src="https://i.pinimg.com/originals/4d/b8/3d/4db83d1b757657acf5edc8bd66e50abf.jpg" />
+      <ProfilePic src={channel.profilePic} />
       <Details>
         <Name>
-          Jane Doe <Date> • 1 day ago</Date>
+          {channel.name} <Date> • {moment(comment.createdAt).fromNow()}</Date>
         </Name>
-        <Content>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.{" "}
-        </Content>
+        <Content>{comment.content}</Content>
       </Details>
     </Container>
   );
