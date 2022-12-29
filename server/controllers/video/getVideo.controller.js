@@ -5,7 +5,7 @@ const Video = require("../../models/video.model");
 exports.getVideo = async (req, res, next) => {
   try {
     const fetchedVideo = await Video.findById(req.params.id);
-    if (!video) {
+    if (!fetchedVideo) {
       return res.status(400).json({
         status: false,
         message: "Video not found",

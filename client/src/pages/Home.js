@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Card from "../components/Card";
 
 const Container = styled.div`
-  min-height: 100vh;
+  /* min-height: 100vh; */
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;

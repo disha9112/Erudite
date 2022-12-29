@@ -1,6 +1,9 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
 
 const Container = styled.div`
   display: flex;
@@ -57,20 +60,27 @@ const Link = styled.span`
 `;
 
 const Login = () => {
-  // const [name, setName] = useState("");
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    dispatch(loginStart());
+
     try {
       axios
         .post("/auth/login", {
           email,
           password,
         })
-        .then((res) => console.log(res.data));
-    } catch (error) {}
+        .then((res) => dispatch(loginSuccess(res.data.user)))
+        .then(() => navigate("/"));
+    } catch (error) {
+      dispatch(loginFailure());
+    }
   };
 
   return (

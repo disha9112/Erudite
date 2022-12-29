@@ -16,7 +16,7 @@ exports.followersVideos = async (req, res, next) => {
     return res.status(200).json({
       status: true,
       message: "Videos of followed channels fetched successfully",
-      list: list.flat().sort((a, b) => b.createdAt - a.createdAt),
+      videos: list.flat().sort((a, b) => b.createdAt - a.createdAt),
     });
   } catch (error) {
     next(error);

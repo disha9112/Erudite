@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
 import styled from "styled-components";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import LinkIcon from "@mui/icons-material/Link";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import Comments from "../components/Comments";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { fetchSuccess } from "../redux/videoSlice";
 
 const Container = styled.div`
   display: flex;
@@ -88,6 +93,31 @@ const Span = styled.span`
 `;
 
 const Video = () => {
+  // const { currentUser } = useSelector((state) => state.user);
+  // const { currentVideo } = useSelector((state) => state.video);
+  // const dispatch = useDispatch();
+
+  const path = useLocation().pathname.split("/")[2];
+  console.log(path);
+
+  const [video, setVideo] = useState({});
+  const [channel, setChannel] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const videoRes = await axios.get(`/videos/find/${path}`);
+        setVideo(videoRes.data.fetchedVideo);
+        const channelRes = await axios.get(
+          `/users/find/${videoRes.data.fetchedVideo.userId}`
+        );
+        setChannel(channelRes.data.fetchedUser);
+        // dispatch(fetchSuccess(videoRes.fetchedVideo.data));
+      } catch (err) {}
+    };
+    fetchData();
+  }, [path]);
+
   return (
     <Container>
       <Content>
@@ -95,19 +125,22 @@ const Video = () => {
           <iframe
             width="100%"
             height="350px"
+            // src={video.videoUrl}
             src="https://www.youtube.com/embed/yIaXoop8gl4"
             title="React Video Sharing App UI Design | Youtube UI Clone with React"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
+            allowFullScreen
           ></iframe>
         </VideoWrapper>
-        <Title>Test Video</Title>
+        <Title>{video.title}</Title>
         <Details>
-          <Info>56,080 views • Jun 30, 2022</Info>
+          <Info>
+            {video.views} views • {moment(video.createdAt).fromNow()}
+          </Info>
           <Buttons>
             <Button>
-              <FavoriteBorderIcon /> 123
+              <FavoriteBorderIcon /> {video.likes?.length}
             </Button>
             <Button>
               <LinkIcon />
@@ -119,23 +152,16 @@ const Video = () => {
         </Details>
         <Channel>
           <ChannelInfo>
-            <Image src="https://i.pinimg.com/originals/4d/b8/3d/4db83d1b757657acf5edc8bd66e50abf.jpg" />
+            <Image src={channel.profilePic} />
             <ChannelDetails>
               <ChannelName>
-                Uploaded by <Span>Test Channel</Span>
+                Uploaded by <Span>{channel.name}</Span>
               </ChannelName>
-              <ChannelName>200K Followers</ChannelName>
+              <ChannelName>{channel.followers} Followers</ChannelName>
             </ChannelDetails>
           </ChannelInfo>
         </Channel>
-        <VideoInfo>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur.{" "}
-        </VideoInfo>
+        <VideoInfo>{video.info}</VideoInfo>
       </Content>
       <CommentsContainer>
         <Comments></Comments>

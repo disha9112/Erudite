@@ -1,10 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import HomeIcon from "@mui/icons-material/Home";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-import LoginIcon from "@mui/icons-material/Login";
+// import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
 import PsychologyIcon from "@mui/icons-material/Psychology";
 import ComputerIcon from "@mui/icons-material/Computer";
 import CurrencyBitcoinIcon from "@mui/icons-material/CurrencyBitcoin";
@@ -13,9 +15,12 @@ import DatasetIcon from "@mui/icons-material/Dataset";
 import RssFeedIcon from "@mui/icons-material/RssFeed";
 import CodeIcon from "@mui/icons-material/Code";
 import CloudIcon from "@mui/icons-material/Cloud";
-import SettingsIcon from "@mui/icons-material/Settings";
-import BugReportIcon from "@mui/icons-material/BugReport";
+// import SettingsIcon from "@mui/icons-material/Settings";
+// import BugReportIcon from "@mui/icons-material/BugReport";
+import VideoCallIcon from "@mui/icons-material/VideoCall";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import { useSelector } from "react-redux";
+import { logOut } from "../redux/userSlice";
 
 const Container = styled.div`
   flex: 1;
@@ -71,8 +76,46 @@ const StyledLink = styled(Link)`
     text-decoration: none;
   }
 `;
+const Button = styled.button`
+  display: flex;
+  align-items: center;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: ${({ theme }) => theme.text};
+  font-size: 1rem;
+  margin: 14.5px 0px;
+  gap: 10px;
+  cursor: pointer;
+  &:hover {
+    border-radius: 10px;
+    color: #ff3465;
+  }
+`;
 
 const Menu = ({ theme, setTheme }) => {
+  const navigate = useNavigate();
+
+  const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    dispatch(logOut({}));
+
+    //   try {
+    //     axios
+    //       .post("/auth/login", {
+    //         email,
+    //         password,
+    //       })
+    //       .then((res) => dispatch(loginSuccess(res.data.user)))
+    //       .then(() => navigate("/"));
+    //   } catch (error) {
+    //     dispatch(loginFailure());
+    //   }
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -94,16 +137,10 @@ const Menu = ({ theme, setTheme }) => {
             Trending
           </Item>
         </StyledLink>
-        <StyledLink to="/followersVideos">
+        <StyledLink to="/following">
           <Item>
             <BookmarkIcon />
             Following
-          </Item>
-        </StyledLink>
-        <StyledLink to="/login">
-          <Item>
-            <LoginIcon />
-            Login
           </Item>
         </StyledLink>
         <Hr />
@@ -140,10 +177,22 @@ const Menu = ({ theme, setTheme }) => {
           Security
         </Item>
         <Hr />
-        <Item>
-          <SettingsIcon />
-          Settings
-        </Item>
+        {!currentUser ? (
+          ""
+        ) : (
+          <div>
+            {/* <StyledLink to="/login"> */}
+            <Button onClick={handleLogout}>
+              <LogoutIcon />
+              Logout
+            </Button>
+            {/* </StyledLink> */}
+            <Item>
+              <VideoCallIcon />
+              Create
+            </Item>
+          </div>
+        )}
         <Item onClick={() => setTheme(!theme)}>
           <ToggleOnIcon />
           Toggle Theme

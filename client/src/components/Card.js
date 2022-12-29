@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
   width: 360px;
+  height: auto;
   margin-bottom: 45px;
   cursor: pointer;
 `;
@@ -69,7 +70,7 @@ const Card = ({ type, video }) => {
   }, [video.userId]);
 
   return (
-    <StyledLink to="/video/test">
+    <StyledLink to={`/video/${video._id}`}>
       <Container>
         <Thumbnail type={type} src={video.thumbnail} />
         <Details>
