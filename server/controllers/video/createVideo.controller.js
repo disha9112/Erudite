@@ -4,8 +4,8 @@ const Video = require("../../models/video.model");
 
 exports.createVideo = async (req, res, next) => {
   try {
-    const { title, info, thumbnail, tag, videoUrl } = req.body;
-    if (!title || !info || !thumbnail || !tag || !videoUrl) {
+    const { title, info, tag, thumbnail, videoUrl } = req.body;
+    if (!title || !info || !tag) {
       return res.status(400).json({
         status: false,
         message: "All fields are required",
@@ -16,8 +16,8 @@ exports.createVideo = async (req, res, next) => {
       userId: req.user.id,
       title,
       info,
-      thumbnail,
       tag,
+      thumbnail,
       videoUrl,
     });
     return res.status(200).json({

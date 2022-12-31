@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import LoginIcon from "@mui/icons-material/Login";
 // import VideoCallIcon from "@mui/icons-material/VideoCall";
@@ -56,6 +56,7 @@ const Search = styled.div`
   padding: 5px;
   border: 2px solid #ccc;
   border-radius: 10px;
+  color: ${({ theme }) => theme.text};
 `;
 const Input = styled.input`
   width: 100%;
@@ -79,14 +80,23 @@ const ProfilePic = styled.img`
 `;
 
 const Header = () => {
+  const navigate = useNavigate();
+
   const { currentUser } = useSelector((state) => state.user);
+
+  const [query, setQuery] = useState("");
 
   return (
     <Container>
       <Wrapper>
         <Search>
-          <Input placeholder="Search"></Input>
-          <YoutubeSearchedForIcon />
+          <Input
+            placeholder="Search"
+            onChange={(e) => setQuery(e.target.value)}
+          ></Input>
+          <YoutubeSearchedForIcon
+            onClick={() => navigate(`/search?search=${query}`)}
+          />
         </Search>
         {currentUser ? (
           <User>

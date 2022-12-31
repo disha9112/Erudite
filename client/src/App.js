@@ -9,6 +9,7 @@ import "./App.css";
 import Header from "./components/Header";
 import { useState } from "react";
 import Login from "./pages/Login";
+import Search from "./pages/Search";
 
 const Container = styled.div`
   display: flex;
@@ -46,6 +47,7 @@ function App() {
                     index
                     element={<Home type="followersVideos" />}
                   />
+                  <Route path="/search" index element={<Search />} />
                   <Route path="login" element={<Login />} />
                   <Route path="register" element={<Register />} />
                   <Route path="video">
