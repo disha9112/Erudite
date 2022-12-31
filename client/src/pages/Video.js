@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import styled from "styled-components";
+// import { toast, ToastContainer } from "react-toastify";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import LinkIcon from "@mui/icons-material/Link";
@@ -108,6 +109,7 @@ const Video = () => {
   const path = useLocation().pathname.split("/")[2];
   console.log(path);
   const [channel, setChannel] = useState({});
+  const [copied, setCopied] = useState(false);
 
   const handleLike = async () => {
     if (currentUser._id) {
@@ -125,6 +127,15 @@ const Video = () => {
           .put(`/users/follow/${channel._id}`)
           .then(() => dispatch(follow(channel._id)));
   };
+  const copyUrl = () => {
+    const element = document.createElement("input");
+    element.value = window.location.href;
+    document.body.appendChild(element);
+    element.select();
+    document.execCommand("copy");
+    document.body.removeChild(element);
+    setCopied(true);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -136,6 +147,8 @@ const Video = () => {
         );
         setChannel(channelRes.data.fetchedUser);
         dispatch(fetchSuccess(videoRes.data.fetchedVideo));
+
+        await axios.put(`/videos/view/${videoRes.data.fetchedVideo._id}`);
       } catch (err) {}
     };
     fetchData();
@@ -143,6 +156,7 @@ const Video = () => {
 
   return (
     <Container>
+      {/* <ToastContainer /> */}
       <Content>
         <VideoWrapper>
           <VideoFrame src={currentVideo.videoUrl} controls />
@@ -187,7 +201,9 @@ const Video = () => {
               )}{" "}
               {currentVideo.likes?.length}
             </Button> */}
-            <Button>
+            <Button onClick={copyUrl}>
+              {" "}
+              {!copied ? "" : "Copied URL!"}
               <LinkIcon />
             </Button>
             <Button>

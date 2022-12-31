@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RemoveScrollBar } from "react-remove-scroll-bar";
+import SendIcon from "@mui/icons-material/Send";
 import Comment from "./Comment";
 import axios from "axios";
 
@@ -32,21 +33,43 @@ const Hr = styled.hr`
   border: 0.5px solid ${({ theme }) => theme.soft};
   margin: 15px 0;
 `;
+const Button = styled.button`
+  color: ${({ theme }) => theme.text};
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+`;
 
 const Comments = ({ videoId }) => {
   const { currentUser } = useSelector((state) => state.user);
 
   const [comments, setComments] = useState([]);
+  const [content, setContent] = useState("");
+
+  const fetchComments = async () => {
+    try {
+      await axios
+        .get(`/comments/${videoId}`)
+        .then((res) => setComments(res.data.comments));
+      console.log(comments);
+    } catch (err) {}
+  };
+  const handleCreateComment = async (e) => {
+    e.preventDefault();
+
+    try {
+      axios
+        .post("/comments/", {
+          userId: currentUser._id,
+          videoId,
+          content,
+        })
+        .then(() => fetchComments());
+    } catch (error) {}
+  };
 
   useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        await axios
-          .get(`/comments/${videoId}`)
-          .then((res) => setComments(res.data.comments));
-        console.log(comments);
-      } catch (err) {}
-    };
     fetchComments();
   }, [videoId]);
 
@@ -54,7 +77,13 @@ const Comments = ({ videoId }) => {
     <Container>
       <NewComment>
         <ProfilePic src={currentUser.profilePic} />
-        <Input placeholder="Add a new comment..." />
+        <Input
+          placeholder="Add a new comment..."
+          onChange={(e) => setContent(e.target.value)}
+        />
+        <Button onClick={handleCreateComment}>
+          <SendIcon />
+        </Button>
       </NewComment>
       <Hr />
       {/* <RemoveScrollBar /> */}

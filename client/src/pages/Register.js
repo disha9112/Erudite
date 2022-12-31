@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -56,13 +56,35 @@ const Link = styled.span`
 `;
 
 const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    // dispatch(loginStart());
+
+    // try {
+    //   axios
+    //     .post("/auth/login", {
+    //       email,
+    //       password,
+    //     })
+    //     .then((res) => dispatch(loginSuccess(res.data.user)))
+    //     .then(() => navigate("/"));
+    // } catch (error) {
+    //   dispatch(loginFailure());
+    // }
+  };
+
   return (
     <Container>
       <SignUp>
         <Title>Sign up</Title>
         <SubTitle>Start teaching and learning with the community!</SubTitle>
-        <Input placeholder="Username" />
-        <Input placeholder="Email" />
+        <Input type="text" placeholder="Name" />
+        <Input type="email" placeholder="Email" />
         <Input type="password" placeholder="Password" />
         <Input type="password" placeholder="Confirm Password" />
         <Button>Sign up</Button>

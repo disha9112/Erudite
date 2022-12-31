@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -52,11 +53,26 @@ const Button = styled.button`
   font-weight: bold;
   color: ${({ theme }) => theme.text};
 `;
-const Links = styled.div`
-  margin-left: 50px;
+const Redirect = styled.div`
+  padding-top: 20px;
 `;
-const Link = styled.span`
-  margin-left: 30px;
+const Span = styled.span`
+  margin-left: 10px;
+  color: #ff3465;
+  cursor: pointer;
+  font-weight: 900;
+`;
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+
+  &:focus,
+  &:hover,
+  &:visited,
+  &:link,
+  &:active {
+    text-decoration: none;
+  }
 `;
 
 const Login = () => {
@@ -102,6 +118,12 @@ const Login = () => {
           required
         />
         <Button onClick={handleLogin}>Log in</Button>
+        <Redirect>
+          Don't have an account?
+          <StyledLink to="/register">
+            <Span>Register</Span>
+          </StyledLink>
+        </Redirect>
       </SignIn>
     </Container>
   );

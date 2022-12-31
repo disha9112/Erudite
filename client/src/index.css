@@ -7,6 +7,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+button {
+  font-family: "DM Sans", sans-serif;
+  padding: 0;
+}
+
+input {
+  font-family: "DM Sans", sans-serif;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

@@ -84,6 +84,7 @@ const Create = ({ setOpen }) => {
   // const [info, setInfo] = useState("");
   const [inputs, setInputs] = useState({});
   // const [tag, setTag] = useState("");
+  const [id, setId] = useState("");
 
   const handleChange = (e) => {
     setInputs((prev) => {
@@ -142,8 +143,10 @@ const Create = ({ setOpen }) => {
     e.preventDefault();
     await axios.post("/videos/", { ...inputs }).then((res) => {
       setOpen(false);
+      setId(res.data.video._id);
       navigate(`/video/${res.data.video._id}`);
     });
+    await axios.put(`/videos/view/${id}`);
   };
 
   return (
