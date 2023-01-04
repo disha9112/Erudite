@@ -10,6 +10,9 @@ const Container = styled.div`
   flex-wrap: wrap;
   color: ${({ theme }) => theme.text};
 `;
+const Info = styled.h2`
+  color: ${({ theme }) => theme.text};
+`;
 
 const Home = ({ type }) => {
   const [videos, setVideos] = useState([]);
@@ -37,9 +40,14 @@ const Home = ({ type }) => {
 
   return (
     <Container>
-      {videos.map((video) => (
+      {videos.length !== 0 ? (
+        videos.map((video) => <Card key={video._id} video={video} />)
+      ) : (
+        <Info>No videos to show</Info>
+      )}
+      {/* {videos.map((video) => (
         <Card key={video._id} video={video} />
-      ))}
+      ))} */}
     </Container>
   );
 };
