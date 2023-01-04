@@ -12,7 +12,10 @@ button {
   padding: 0;
 }
 
-input {
+input,
+select,
+option,
+textarea {
   font-family: "DM Sans", sans-serif;
 }
 

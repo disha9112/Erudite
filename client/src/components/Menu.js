@@ -134,38 +134,54 @@ const Menu = ({ theme, setTheme }) => {
             </Item>
           </StyledLink>
           <Hr />
-          <Item>
-            <PsychologyIcon />
-            AI/ML
-          </Item>
-          <Item>
-            <CurrencyBitcoinIcon />
-            Blockchain
-          </Item>
-          <Item>
-            <CloudIcon />
-            Cloud
-          </Item>
-          <Item>
-            <DatasetIcon />
-            Data Science
-          </Item>
-          <Item>
-            <ComputerIcon />
-            Development
-          </Item>
-          <Item>
-            <RssFeedIcon />
-            IoT
-          </Item>
-          <Item>
-            <CodeIcon />
-            Programming
-          </Item>
-          <Item>
-            <SecurityIcon />
-            Security
-          </Item>
+          <StyledLink to="/ai-ml">
+            <Item>
+              <PsychologyIcon />
+              AI/ML
+            </Item>
+          </StyledLink>
+          <StyledLink to="/blockchain">
+            <Item>
+              <CurrencyBitcoinIcon />
+              Blockchain
+            </Item>
+          </StyledLink>
+          <StyledLink to="/cloud">
+            <Item>
+              <CloudIcon />
+              Cloud
+            </Item>
+          </StyledLink>
+          <StyledLink to="/data-science">
+            <Item>
+              <DatasetIcon />
+              Data Science
+            </Item>
+          </StyledLink>
+          <StyledLink to="/development">
+            <Item>
+              <ComputerIcon />
+              Development
+            </Item>
+          </StyledLink>
+          <StyledLink to="/iot">
+            <Item>
+              <RssFeedIcon />
+              IoT
+            </Item>
+          </StyledLink>
+          <StyledLink to="/programming">
+            <Item>
+              <CodeIcon />
+              Programming
+            </Item>
+          </StyledLink>
+          <StyledLink to="/security">
+            <Item>
+              <SecurityIcon />
+              Security
+            </Item>
+          </StyledLink>
           <Hr />
           {!currentUser ? (
             ""

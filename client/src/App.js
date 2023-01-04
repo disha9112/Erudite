@@ -49,6 +49,38 @@ function App() {
                       index
                       element={<Home type="followersVideos" />}
                     />
+                    <Route path="/ai-ml" index element={<Home type="aiml" />} />
+                    <Route
+                      path="/blockchain"
+                      index
+                      element={<Home type="blockchain" />}
+                    />
+                    <Route
+                      path="/cloud"
+                      index
+                      element={<Home type="cloud" />}
+                    />
+                    <Route
+                      path="/data-science"
+                      index
+                      element={<Home type="datascience" />}
+                    />
+                    <Route
+                      path="/development"
+                      index
+                      element={<Home type="development" />}
+                    />
+                    <Route path="/iot" index element={<Home type="iot" />} />
+                    <Route
+                      path="/programming"
+                      index
+                      element={<Home type="programming" />}
+                    />
+                    <Route
+                      path="/security"
+                      index
+                      element={<Home type="security" />}
+                    />
                     <Route path="/search" index element={<Search />} />
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />

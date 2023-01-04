@@ -14,7 +14,7 @@ import { toast, ToastContainer } from "react-toastify";
 
 const Container = styled.div`
   display: flex;
-  z-index: 100;
+  z-index: 200;
   width: 100%;
   height: 100%;
   position: fixed;
@@ -54,6 +54,20 @@ const Input = styled.input`
   border-radius: 3px;
   padding: 10px;
   background-color: transparent;
+`;
+const Select = styled.select`
+  border: 1px solid ${({ theme }) => theme.soft};
+  color: ${({ theme }) => theme.text};
+  border-radius: 3px;
+  padding: 10px;
+  background-color: transparent;
+`;
+const Option = styled.option`
+  /* border: 1px solid ${({ theme }) => theme.soft}; */
+  color: black;
+  /* border-radius: 3px;
+  padding: 10px;
+  background-color: transparent; */
 `;
 const Info = styled.textarea`
   border: 1px solid ${({ theme }) => theme.soft};
@@ -177,12 +191,22 @@ const Create = ({ setOpen }) => {
           onChange={handleChange}
         />
         <Info placeholder="Info" name="info" rows={5} onChange={handleChange} />
-        <Input
+        {/* <Input
           type="text"
           name="tag"
           placeholder="Tag"
           onChange={handleChange}
-        />
+        /> */}
+        <Select name="tag" onChange={handleChange}>
+          <Option value="aiml">AI/ML</Option>
+          <Option value="blockchain">Blockchain</Option>
+          <Option value="cloud">Cloud</Option>
+          <Option value="datascience">Data Science</Option>
+          <Option value="development">Development</Option>
+          <Option value="iot">IoT</Option>
+          <Option value="programming">Programming</Option>
+          <Option value="security">Security</Option>
+        </Select>
         <Label>Thumbnail</Label>
         {thumbnailProgress > 0 ? (
           "Uploading: " + thumbnailProgress + "%"

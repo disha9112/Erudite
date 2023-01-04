@@ -4,8 +4,8 @@ const Video = require("../../models/video.model");
 
 exports.tagVideos = async (req, res, next) => {
   try {
-    const tag = req.query.tag;
-    const tagVideos = await Video.find({ tag: { $in: tag } }).limit(20);
+    const tag = req.params.tag;
+    const tagVideos = await Video.find({ tag: tag }).limit(20);
 
     return res.status(200).json({
       status: true,

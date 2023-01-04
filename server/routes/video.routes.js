@@ -30,7 +30,7 @@ router.put("/view/:id", updateViews);
 router.get("/random", randomVideos);
 router.get("/trending", trendingVideos);
 router.get("/followersVideos", verifyToken, followersVideos);
-router.get("/tag", tagVideos);
+router.get("/tag/:tag", tagVideos);
 router.get("/search", searchVideos);
 
 module.exports = router;

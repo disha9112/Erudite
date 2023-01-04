@@ -12,20 +12,32 @@ const Container = styled.div`
 `;
 
 const Home = ({ type }) => {
-  const [randomVideos, setRandomVideos] = useState([]);
+  const [videos, setVideos] = useState([]);
 
   useEffect(() => {
-    const fetchRandomVideos = async () => {
-      axios
-        .get(`/videos/${type}`)
-        .then((res) => setRandomVideos(res.data.videos));
+    const fetchVideos = async () => {
+      axios.get(`/videos/${type}`).then((res) => setVideos(res.data.videos));
     };
-    fetchRandomVideos();
+    const fetchTagVideos = async () => {
+      axios
+        .get(`/videos/tag/${type}`)
+        .then((res) => setVideos(res.data.tagVideos));
+    };
+
+    if (
+      type !== "random" &&
+      type !== "trending" &&
+      type !== "followersVideos"
+    ) {
+      fetchTagVideos();
+    } else {
+      fetchVideos();
+    }
   }, [type]);
 
   return (
     <Container>
-      {randomVideos.map((video) => (
+      {videos.map((video) => (
         <Card key={video._id} video={video} />
       ))}
     </Container>
