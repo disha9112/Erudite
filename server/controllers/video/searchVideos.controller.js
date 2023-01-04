@@ -5,7 +5,6 @@ const Video = require("../../models/video.model");
 exports.searchVideos = async (req, res, next) => {
   try {
     const search = req.query.search;
-    // option i indicates case insensitive
     const searchedVideos = await Video.find({
       title: { $regex: search, $options: "i" },
     }).limit(30);

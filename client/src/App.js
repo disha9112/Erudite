@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./utils/Theme";
+import { Scrollbar } from "react-scrollbars-custom";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Video from "./pages/Video";
@@ -27,39 +28,41 @@ function App() {
   const [theme, setTheme] = useState(true);
 
   return (
-    <ThemeProvider theme={theme ? darkTheme : lightTheme}>
-      <Container>
-        <Router>
-          <Menu theme={theme} setTheme={setTheme} />
-          <Main>
-            <Header />
-            <Wrapper>
-              <Routes>
-                <Route path="/">
-                  <Route index element={<Home type="random" />} />
-                  <Route
-                    path="/trending"
-                    index
-                    element={<Home type="trending" />}
-                  />
-                  <Route
-                    path="/following"
-                    index
-                    element={<Home type="followersVideos" />}
-                  />
-                  <Route path="/search" index element={<Search />} />
-                  <Route path="login" element={<Login />} />
-                  <Route path="register" element={<Register />} />
-                  <Route path="video">
-                    <Route path=":id" element={<Video />} />
+    <Scrollbar style={{ height: "100vh" }}>
+      <ThemeProvider theme={theme ? darkTheme : lightTheme}>
+        <Container>
+          <Router>
+            <Menu theme={theme} setTheme={setTheme} />
+            <Main>
+              <Header />
+              <Wrapper>
+                <Routes>
+                  <Route path="/">
+                    <Route index element={<Home type="random" />} />
+                    <Route
+                      path="/trending"
+                      index
+                      element={<Home type="trending" />}
+                    />
+                    <Route
+                      path="/following"
+                      index
+                      element={<Home type="followersVideos" />}
+                    />
+                    <Route path="/search" index element={<Search />} />
+                    <Route path="login" element={<Login />} />
+                    <Route path="register" element={<Register />} />
+                    <Route path="video">
+                      <Route path=":id" element={<Video />} />
+                    </Route>
                   </Route>
-                </Route>
-              </Routes>
-            </Wrapper>
-          </Main>
-        </Router>
-      </Container>
-    </ThemeProvider>
+                </Routes>
+              </Wrapper>
+            </Main>
+          </Router>
+        </Container>
+      </ThemeProvider>
+    </Scrollbar>
   );
 }
 

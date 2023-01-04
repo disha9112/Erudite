@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import LoginIcon from "@mui/icons-material/Login";
-// import VideoCallIcon from "@mui/icons-material/VideoCall";
 import YoutubeSearchedForIcon from "@mui/icons-material/YoutubeSearchedFor";
 import { useSelector } from "react-redux";
 
@@ -100,9 +99,6 @@ const Header = () => {
         </Search>
         {currentUser ? (
           <User>
-            {/* <Item>
-              <VideoCallIcon />
-            </Item> */}
             <ProfilePic src={currentUser.profilePic} />
             {currentUser.name}
           </User>

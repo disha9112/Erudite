@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Scrollbar } from "react-scrollbars-custom";
 import styled from "styled-components";
-import { RemoveScrollBar } from "react-remove-scroll-bar";
 import SendIcon from "@mui/icons-material/Send";
 import Comment from "./Comment";
 import axios from "axios";
+import "react-toastify/dist/ReactToastify.min.css";
+import { toast, ToastContainer } from "react-toastify";
 
 const Container = styled.div``;
 const Wrapper = styled.div`
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   height: 74vh;
 `;
 const NewComment = styled.div`
@@ -52,7 +54,10 @@ const Comments = ({ videoId }) => {
       await axios
         .get(`/comments/${videoId}`)
         .then((res) => setComments(res.data.comments));
-      console.log(comments);
+      console.log(comments).catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.message);
+      });
     } catch (err) {}
   };
   const handleCreateComment = async (e) => {
@@ -86,12 +91,13 @@ const Comments = ({ videoId }) => {
         </Button>
       </NewComment>
       <Hr />
-      {/* <RemoveScrollBar /> */}
-      <Wrapper>
-        {comments.map((comment) => (
-          <Comment key={comment._id} comment={comment} />
-        ))}
-      </Wrapper>
+      <Scrollbar style={{ height: "74vh" }}>
+        <Wrapper>
+          {comments.map((comment) => (
+            <Comment key={comment._id} comment={comment} />
+          ))}
+        </Wrapper>
+      </Scrollbar>
     </Container>
   );
 };

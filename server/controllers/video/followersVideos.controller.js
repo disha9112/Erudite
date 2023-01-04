@@ -7,7 +7,6 @@ exports.followersVideos = async (req, res, next) => {
     const user = await User.findById(req.user.id);
     const follwedChannels = user.followedUsers;
 
-    // we are finding all channels, not just one, thus we are using Promise
     const list = await Promise.all(
       follwedChannels.map((channelId) => {
         return Video.find({ userId: channelId });

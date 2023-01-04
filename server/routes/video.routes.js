@@ -19,9 +19,6 @@ const { tagVideos } = require("../controllers/video/tagVideos.controller");
 const {
   searchVideos,
 } = require("../controllers/video/searchVideos.controller");
-// const {
-//   like,
-// } = require("../controllers/video/like.controller");
 
 const verifyToken = require("../middlewares/auth.middleware");
 
@@ -35,6 +32,5 @@ router.get("/trending", trendingVideos);
 router.get("/followersVideos", verifyToken, followersVideos);
 router.get("/tag", tagVideos);
 router.get("/search", searchVideos);
-// router.put("/like/:videoId", verifyToken, like)
 
 module.exports = router;

@@ -9,6 +9,8 @@ import {
 import axios from "axios";
 import styled from "styled-components";
 import app from "../firebase/firebase";
+import "react-toastify/dist/ReactToastify.min.css";
+import { toast, ToastContainer } from "react-toastify";
 
 const Container = styled.div`
   display: flex;
@@ -80,10 +82,7 @@ const Create = ({ setOpen }) => {
   const [video, setVideo] = useState(undefined);
   const [thumbnailProgress, setThumbnailProgress] = useState(0);
   const [videoProgress, setVideoProgress] = useState(0);
-  // const [title, setTitle] = useState("");
-  // const [info, setInfo] = useState("");
   const [inputs, setInputs] = useState({});
-  // const [tag, setTag] = useState("");
   const [id, setId] = useState("");
 
   const handleChange = (e) => {
@@ -141,16 +140,23 @@ const Create = ({ setOpen }) => {
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    await axios.post("/videos/", { ...inputs }).then((res) => {
-      setOpen(false);
-      setId(res.data.video._id);
-      navigate(`/video/${res.data.video._id}`);
-    });
+    await axios
+      .post("/videos/", { ...inputs })
+      .then((res) => {
+        setOpen(false);
+        setId(res.data.video._id);
+        navigate(`/video/${res.data.video._id}`);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.message);
+      });
     await axios.put(`/videos/view/${id}`);
   };
 
   return (
     <Container>
+      <ToastContainer />
       <Wrapper>
         <Close onClick={() => setOpen(false)}>Close</Close>
         <Title>Upload a new video</Title>

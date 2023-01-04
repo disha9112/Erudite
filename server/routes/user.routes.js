@@ -16,6 +16,5 @@ router.get("/find/:id", getUser);
 router.put("/follow/:id", verifyToken, follow);
 router.put("/unfollow/:id", verifyToken, unfollow);
 router.put("/like/:videoId", verifyToken, like);
-// router.put("/dislike/:videoId", verifyToken, dislike);
 
 module.exports = router;

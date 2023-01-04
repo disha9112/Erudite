@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
+import "react-toastify/dist/ReactToastify.min.css";
+import { toast, ToastContainer } from "react-toastify";
 
 const Container = styled.div`
   display: flex;
@@ -93,14 +95,21 @@ const Login = () => {
           password,
         })
         .then((res) => dispatch(loginSuccess(res.data.user)))
-        .then(() => navigate("/"));
+        .then(() => navigate("/"))
+        .catch((err) => {
+          console.log(err);
+          toast.error(err.response.data.message);
+        });
     } catch (error) {
+      // toast.error(error.message);
+      // alert(error.message);
       dispatch(loginFailure());
     }
   };
 
   return (
     <Container>
+      <ToastContainer />
       <SignIn>
         <Title>Log in</Title>
         <SubTitle>Welcome back to Erudite!</SubTitle>
