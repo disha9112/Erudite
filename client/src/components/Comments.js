@@ -81,16 +81,23 @@ const Comments = ({ videoId }) => {
   return (
     <Container>
       <NewComment>
-        <ProfilePic src={currentUser.profilePic} />
-        <Input
-          placeholder="Add a new comment..."
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <Button onClick={handleCreateComment}>
-          <SendIcon />
-        </Button>
+        {!currentUser ? (
+          // <ProfilePic />
+          <></>
+        ) : (
+          <>
+            <ProfilePic src={currentUser.profilePic} />
+            <Input
+              placeholder="Add a new comment..."
+              onChange={(e) => setContent(e.target.value)}
+            />
+            <Button onClick={handleCreateComment}>
+              <SendIcon />
+            </Button>
+            <Hr />
+          </>
+        )}
       </NewComment>
-      <Hr />
       <Scrollbar style={{ height: "74vh" }}>
         <Wrapper>
           {comments.map((comment) => (

@@ -6,6 +6,7 @@ import YoutubeSearchedForIcon from "@mui/icons-material/YoutubeSearchedFor";
 import { useSelector } from "react-redux";
 
 const Container = styled.div`
+  z-index: 100;
   position: sticky;
   top: 0;
   background-color: ${({ theme }) => theme.bgMenu};

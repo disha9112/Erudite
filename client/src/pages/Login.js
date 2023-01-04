@@ -59,7 +59,7 @@ const Redirect = styled.div`
   padding-top: 20px;
 `;
 const Span = styled.span`
-  margin-left: 10px;
+  /* margin-left: 10px; */
   color: #ff3465;
   cursor: pointer;
   font-weight: 900;
@@ -101,8 +101,6 @@ const Login = () => {
           toast.error(err.response.data.message);
         });
     } catch (error) {
-      // toast.error(error.message);
-      // alert(error.message);
       dispatch(loginFailure());
     }
   };
@@ -130,7 +128,7 @@ const Login = () => {
         <Redirect>
           Don't have an account?
           <StyledLink to="/register">
-            <Span>Register</Span>
+            <Span> Register</Span>
           </StyledLink>
         </Redirect>
       </SignIn>

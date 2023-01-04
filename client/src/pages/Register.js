@@ -1,5 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
+import axios from "axios";
 import styled from "styled-components";
+import "react-toastify/dist/ReactToastify.min.css";
+import { toast, ToastContainer } from "react-toastify";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import app from "../firebase/firebase";
 
 const Container = styled.div`
   display: flex;
@@ -10,7 +23,7 @@ const Container = styled.div`
   margin-top: -50px;
 `;
 const SignUp = styled.div`
-  flex: 2;
+  /* flex: 2; */
   align-items: center;
   height: auto;
   flex-direction: column;
@@ -37,6 +50,7 @@ const Input = styled.input`
   background-color: transparent;
   width: 100%;
   color: ${({ theme }) => theme.text};
+  /* display: grid; */
 `;
 const Button = styled.button`
   border-radius: 3px;
@@ -47,6 +61,11 @@ const Button = styled.button`
   background-color: #ff3465;
   font-weight: bold;
   color: ${({ theme }) => theme.text};
+  display: grid;
+`;
+const Label = styled.label`
+  font-size: 0.9rem;
+  display: grid;
 `;
 const Links = styled.div`
   margin-left: 50px;
@@ -56,38 +75,131 @@ const Link = styled.span`
 `;
 
 const Register = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // const [name, setName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [inputs, setInputs] = useState({});
+  const [profilePic, setProfilePic] = useState(undefined);
+  const [progress, setProgress] = useState(0);
+
+  const handleChange = (e) => {
+    setInputs((prev) => {
+      // take previous items and change description to new value
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
+
+  const uploadFile = (file) => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + file.name;
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(Math.round(progress));
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running");
+            break;
+          default:
+            break;
+        }
+      },
+      (error) => {},
+      () => {
+        // Upload completed successfully, now we can get the download URL
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          // setInputs((prev) => {
+          //   // take previous items and change description to new value
+          //   return { ...prev, [urlType]: downloadURL };
+          // });
+          // setProfilePic(downloadURL);
+          setInputs((prev) => {
+            // take previous items and change description to new value
+            return { ...prev, profilePic: downloadURL };
+          });
+        });
+      }
+    );
+  };
+
+  useEffect(() => {
+    profilePic && uploadFile(profilePic);
+  }, [profilePic]);
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    // dispatch(loginStart());
+    dispatch(loginStart());
 
-    // try {
-    //   axios
-    //     .post("/auth/login", {
-    //       email,
-    //       password,
-    //     })
-    //     .then((res) => dispatch(loginSuccess(res.data.user)))
-    //     .then(() => navigate("/"));
-    // } catch (error) {
-    //   dispatch(loginFailure());
-    // }
+    if (inputs.password !== confirmPassword) {
+      toast.error("Passwords don't match, try again");
+    } else {
+      try {
+        axios
+          .post("/auth/register", { ...inputs })
+          .then((res) => dispatch(loginSuccess(res.data.user)))
+          .then(() => navigate("/"))
+          .catch((err) => {
+            console.log(err);
+            toast.error(err.response.data.message);
+          });
+      } catch (error) {
+        dispatch(loginFailure());
+      }
+    }
   };
 
   return (
     <Container>
+      <ToastContainer />
       <SignUp>
         <Title>Sign up</Title>
-        <SubTitle>Start teaching and learning with the community!</SubTitle>
-        <Input type="text" placeholder="Name" />
-        <Input type="email" placeholder="Email" />
-        <Input type="password" placeholder="Password" />
-        <Input type="password" placeholder="Confirm Password" />
-        <Button>Sign up</Button>
+        <SubTitle>Start levelling up!</SubTitle>
+        <Input
+          type="text"
+          name="name"
+          placeholder="Name"
+          onChange={handleChange}
+        />
+        <Input
+          type="email"
+          name="email"
+          placeholder="Email"
+          onChange={handleChange}
+        />
+        <Input
+          type="password"
+          name="password"
+          placeholder="Password"
+          onChange={handleChange}
+        />
+        <Input
+          type="password"
+          placeholder="Confirm Password"
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        <Label>Profile Picture</Label>
+        {progress > 0 ? (
+          "Uploading: " + progress + "%"
+        ) : (
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setProfilePic(e.target.files[0])}
+          />
+        )}
+        <Button onClick={handleRegister}>Sign up</Button>
       </SignUp>
     </Container>
   );
