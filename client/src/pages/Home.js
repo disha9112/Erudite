@@ -40,12 +40,11 @@ const Home = ({ type }) => {
 
   return (
     <Container>
-      {videos.map((video) => (
-        <Card key={video._id} video={video} />
-      ))}
-      {/* {videos.map((video) => (
-        <Card key={video._id} video={video} />
-      ))} */}
+      {videos.length !== 0 ? (
+        videos.map((video) => <Card key={video._id} video={video} />)
+      ) : (
+        <Info>No videos to show</Info>
+      )}
     </Container>
   );
 };
