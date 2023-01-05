@@ -40,7 +40,7 @@ const Home = ({ type }) => {
 
   return (
     <Container>
-      {videos.length !== 0 ? (
+      {videos && videos.length > 0 ? (
         videos.map((video) => <Card key={video._id} video={video} />)
       ) : (
         <Info>No videos to show</Info>
