@@ -18,7 +18,7 @@ const Search = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       const res = await fetch(
-        `http://localhost:8000/api/videos/search${search}`,
+        `https://erudite-live.vercel.app/api/videos/search${search}`,
         {
           method: "GET",
           headers: {

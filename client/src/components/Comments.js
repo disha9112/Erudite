@@ -51,7 +51,7 @@ const Comments = ({ videoId }) => {
 
   const fetchComments = async () => {
     try {
-      await fetch(`http://localhost:8000/api/comments/${videoId}`, {
+      await fetch(`https://erudite-live.vercel.app/api/comments/${videoId}`, {
         method: "GET",
         headers: {
           Authorization: localStorage.getItem("token"),
@@ -69,7 +69,7 @@ const Comments = ({ videoId }) => {
     e.preventDefault();
 
     try {
-      fetch("http://localhost:8000/api/comments/", {
+      fetch("https://erudite-live.vercel.app/api/comments/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -89,7 +89,7 @@ const Login = () => {
     dispatch(loginStart());
 
     try {
-      await fetch("http://localhost:8000/api/auth/login", {
+      await fetch("https://erudite-live.vercel.app/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

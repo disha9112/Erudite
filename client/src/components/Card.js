@@ -62,7 +62,7 @@ const Card = ({ type, video }) => {
 
   useEffect(() => {
     const fetchChannel = async () => {
-      fetch(`http://localhost:8000/api/users/find/${video.userId}`, {
+      fetch(`https://erudite-live.vercel.app/api/users/find/${video.userId}`, {
         method: "GET",
         headers: {
           Authorization: localStorage.getItem("token"),

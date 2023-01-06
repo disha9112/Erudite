@@ -154,16 +154,16 @@ const Create = ({ setOpen }) => {
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    await fetch(
-      "https://erudite-gpzx.onrender.com/api/videos/",
-      { ...inputs },
-      {
-        method: "POST",
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      }
-    )
+    await fetch("https://erudite-live.vercel.app/api/videos/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        ...inputs,
+      }),
+    })
       .then((res) => {
         setOpen(false);
         setId(res.data.video._id);
@@ -173,7 +173,7 @@ const Create = ({ setOpen }) => {
         console.log(err);
         toast.error(err.response.data.message);
       });
-    await fetch(`https://erudite-gpzx.onrender.com/api/videos/view/${id}`, {
+    await fetch(`https://erudite-live.vercel.app/api/videos/view/${id}`, {
       method: "PUT",
       headers: {
         Authorization: localStorage.getItem("token"),

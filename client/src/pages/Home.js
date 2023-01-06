@@ -19,7 +19,7 @@ const Home = ({ type }) => {
 
   useEffect(() => {
     const fetchVideos = async () => {
-      await fetch(`http://localhost:8000/api/videos/${type}`, {
+      await fetch(`https://erudite-live.vercel.app/api/videos/${type}`, {
         method: "GET",
         // headers: {
         //   Authorization: localStorage.getItem("token"),
@@ -30,7 +30,7 @@ const Home = ({ type }) => {
       // .catch((err) => console.log(err));
     };
     const fetchTagVideos = async () => {
-      fetch(`http://localhost:8000/api/videos/tag/${type}`, {
+      fetch(`https://erudite-live.vercel.app/api/videos/tag/${type}`, {
         method: "GET",
         headers: {
           Authorization: localStorage.getItem("token"),

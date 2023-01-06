@@ -146,7 +146,7 @@ const Register = () => {
       toast.error("Passwords don't match, try again");
     } else {
       try {
-        await fetch("http://localhost:8000/api/auth/register", {
+        await fetch("https://erudite-live.vercel.app/api/auth/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

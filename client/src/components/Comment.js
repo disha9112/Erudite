@@ -35,12 +35,15 @@ const Comment = ({ comment }) => {
 
   useEffect(() => {
     const fetchCommentDetails = async () => {
-      await fetch(`http://localhost:8000/api/users/find/${comment.userId}`, {
-        method: "GET",
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
+      await fetch(
+        `https://erudite-live.vercel.app/api/users/find/${comment.userId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      )
         .then((res) => res.json())
         .then((data) => setChannel(data.fetchedUser));
     };

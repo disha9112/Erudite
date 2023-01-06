@@ -113,30 +113,39 @@ const Video = () => {
 
   const handleLike = async () => {
     if (currentUser._id) {
-      await fetch(`http://localhost:8000/api/users/like/${currentVideo._id}`, {
-        method: "PUT",
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
+      await fetch(
+        `https://erudite-live.vercel.app/api/users/like/${currentVideo._id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      )
         // .then((res) => res.json())
         .then(() => dispatch(like(currentUser._id)));
     }
   };
   const handleFollow = async () => {
     currentUser.followedUsers.includes(channel._id)
-      ? await fetch(`http://localhost:8000/api/users/unfollow/${channel._id}`, {
-          method: "PUT",
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }).then(() => dispatch(follow(channel._id)))
-      : await fetch(`http://localhost:8000/api/users/follow/${channel._id}`, {
-          method: "PUT",
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }).then(() => dispatch(follow(channel._id)));
+      ? await fetch(
+          `https://erudite-live.vercel.app/api/users/unfollow/${channel._id}`,
+          {
+            method: "PUT",
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        ).then(() => dispatch(follow(channel._id)))
+      : await fetch(
+          `https://erudite-live.vercel.app/api/users/follow/${channel._id}`,
+          {
+            method: "PUT",
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        ).then(() => dispatch(follow(channel._id)));
   };
   const copyUrl = () => {
     const element = document.createElement("input");
@@ -152,7 +161,7 @@ const Video = () => {
     const fetchData = async () => {
       try {
         const videoRes = await fetch(
-          `http://localhost:8000/api/videos/find/${path}`,
+          `https://erudite-live.vercel.app/api/videos/find/${path}`,
           {
             method: "GET",
             headers: {
@@ -162,7 +171,7 @@ const Video = () => {
         ).then((res) => res.json());
         // setVideo(videoRes.data.fetchedVideo);
         const channelRes = await fetch(
-          `http://localhost:8000/api/users/find/${videoRes.fetchedVideo.userId}`,
+          `https://erudite-live.vercel.app/api/users/find/${videoRes.fetchedVideo.userId}`,
           {
             method: "GET",
             headers: {
@@ -175,7 +184,7 @@ const Video = () => {
         console.log(videoRes.fetchedVideo);
 
         await fetch(
-          `http://localhost:8000/api/videos/view/${videoRes.fetchedVideo._id}`,
+          `https://erudite-live.vercel.app/api/videos/view/${videoRes.fetchedVideo._id}`,
           {
             method: "PUT",
             headers: {
