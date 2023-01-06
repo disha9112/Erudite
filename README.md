@@ -1,88 +1,72 @@
-<div id="top"></div>
-
+<!-- PROJECT LOGO -->
+<br />
 <div align="center">
-  <!-- <a href="https://opus-live.netlify.app/">
-    <img src="https://user-images.githubusercontent.com/78133928/210550123-fe685695-5cb7-473e-bfa0-6eb72c29b78a.png" alt="Logo" height="25">
+  <!-- <a href="https://github.com/othneildrew/Best-README-Template">
+    <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a> -->
 
+<a href="https://erudite-live.netlify.app/">
   <h1 align="center">Erudite</h1>
 
+</a>
   <p align="center">
-    Learn everyday!
+    Learn, teach and level up with the community!
+    <!-- <br />
+    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a> -->
+    <br />
+    <br />
+    <!-- <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    ·
+    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a> -->
   </p>
 </div>
 
-</br>
-
-![Erudite](https://user-images.githubusercontent.com/78133928/210550452-70aba49c-39f5-4e4d-85de-ddf2bc396c62.png)
-
-<!-- HOSTED LINK -->
-
-## Hosted Link
-
-<a href="https://opus-live.netlify.app/" target="_blank">https://opus-live.netlify.app/</a>
-
 <!-- ABOUT THE PROJECT -->
 
-# About
+## About The Project
 
-<!-- Opus is a productivity website, built using the MERN stack. It provides a one-stop solution for users to enhance their organizing capabilties by scheduling their upcoming events in calendars, jotting down their tasks and notes, and using a timer to break down work durations into short yet effective time periods for the best results. -->
+![![Erudite Homepage][erudite-homepage]](https://user-images.githubusercontent.com/78133928/210550452-70aba49c-39f5-4e4d-85de-ddf2bc396c62.png)
 
-Erudite is a video streaming and sharing website, built using the MERN stack.
+Erudite is a video streaming and sharing app, built using the MERN stack. No matter the technology niche, users can upload and access video content under different categories. The website gives them the ability to sort through the trending videos, like them, leave comments, and follow their favourite channels too.
 
-<!-- FEATURES IMPLEMENTED -->
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-# Features Implemented
+## Features Implemented
 
-## Frontend
+- Users can register or login to their account to access the features available.
+- The home page fetches a list of videos, which are randomly fetched from the database. Additionally, users can search for a video by providing the title in the search bar above.
+- Users can also sort through the top trending videos, those uploaded by the channels they follow, or videos under a specific tag through the side menu available.
+- An aesthetic UI has been implemented with the ability to switch between light or dark themes, depending on the choice of the user.
+- If users wish to upload their own video content, they can do so efficiently by making use of the create page. The content would include a thumbnail, the video file, the tech category under which the content falls, and a short description of what their video talks about.
+- Individual videos can be liked, commented on, or shared by copying the URL to the clipboard.
 
-- Users can create an account to access the features available.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Backend
-
-1. Auth Routes
-
-- /register
-  - Account credentials are securely authenticated and stored in the database.
-- /login
-  - Only valid credentials are accepted at login.
-  - JWT and cookies are used for verification.
-
-2. API Routes
-
-- Users
-
-  - /createNote
-    - Creates and adds a note to the database.
-
-- Videos
-
-  - /createTodo
-    - Creates and adds a todo to the database.
-
-- Comments
-
-  - /createEvent
-    - Creates and adds an event to the database.
-
-<!-- BUILT WITH -->
-
-# Built With
+## Built With
 
 - React.js
-- Styled Components
+- Styled-Components
+- Firebase
+- Redux
 - Express.js
 - Node.js
-- MongoDB
-- Redux
-- Firebase
 - JWT
 - Bcrypt
-- Cookie Parser
+- MongoDB
+
+  <!-- - [![Angular][angular.io]][angular-url] -->
+  <!-- - [![Svelte][svelte.dev]][svelte-url] -->
+  <!-- - [![Laravel][laravel.com]][laravel-url] -->
+  <!-- - [![Bootstrap][bootstrap.com]][bootstrap-url] -->
+  <!-- - [![JQuery][jquery.com]][jquery-url] -->
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 
-# Getting Started
+## Installation
 
 1. Fork the repository
 2. Clone the repository
@@ -99,10 +83,10 @@ cd server
 npm install
 ```
 
-5. Set up a .env file (check the .example.env file) with custom keys and run the server
+5. Set up a .env file (check the .example.env file) with custom keys and run the server side
 
 ```sh
-npm run dev
+npm start
 ```
 
 6. Navigate to the client folder in a new terminal and install the packages and libraries
@@ -112,14 +96,10 @@ cd client
 npm install
 ```
 
-7. Set up a .env file (check the .example.env file) with custom keys and run the server
-
-```sh
-npm run dev
-```
-
-8. Run the client side of the website
+7. Set up a .env file (check the .example.env file) with custom keys and run the client side
 
 ```sh
 npm start
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
