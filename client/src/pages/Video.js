@@ -200,10 +200,12 @@ const Video = () => {
   return (
     <Container>
       {/* <ToastContainer /> */}
-      <Content>
-        <VideoWrapper>
-          <VideoFrame src={currentVideo.videoUrl} controls />
-          {/* <iframe
+      {currentVideo ? (
+        <>
+          <Content>
+            <VideoWrapper>
+              <VideoFrame src={currentVideo.videoUrl} controls />
+              {/* <iframe
             width="100%"
             height="350px"
             // src={video.videoUrl}
@@ -213,30 +215,30 @@ const Video = () => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           ></iframe> */}
-        </VideoWrapper>
-        <Title>{currentVideo.title}</Title>
-        <Details>
-          <Info>
-            {currentVideo.views} views •{" "}
-            {moment(currentVideo.createdAt).fromNow()}
-          </Info>
-          <Buttons>
-            {currentUser === null ? (
-              <Button>
-                {currentVideo.likes.length}
-                <FavoriteBorderIcon />
-              </Button>
-            ) : (
-              <Button onClick={handleLike}>
-                {currentVideo.likes?.includes(currentUser._id) ? (
-                  <FavoriteIcon />
+            </VideoWrapper>
+            <Title>{currentVideo.title}</Title>
+            <Details>
+              <Info>
+                {currentVideo.views} views •{" "}
+                {moment(currentVideo.createdAt).fromNow()}
+              </Info>
+              <Buttons>
+                {currentUser === null ? (
+                  <Button>
+                    {currentVideo.likes.length}
+                    <FavoriteBorderIcon />
+                  </Button>
                 ) : (
-                  <FavoriteBorderIcon />
-                )}{" "}
-                {currentVideo.likes?.length}
-              </Button>
-            )}
-            {/* <Button onClick={handleLike}>
+                  <Button onClick={handleLike}>
+                    {currentVideo.likes?.includes(currentUser._id) ? (
+                      <FavoriteIcon />
+                    ) : (
+                      <FavoriteBorderIcon />
+                    )}{" "}
+                    {currentVideo.likes?.length}
+                  </Button>
+                )}
+                {/* <Button onClick={handleLike}>
               {currentVideo.likes?.includes(currentUser._id) ? (
                 <FavoriteIcon />
               ) : (
@@ -244,38 +246,42 @@ const Video = () => {
               )}{" "}
               {currentVideo.likes?.length}
             </Button> */}
-            <Button onClick={copyUrl}>
-              {" "}
-              {!copied ? "" : "Copied URL!"}
-              <LinkIcon />
-            </Button>
-            <Button>
-              {currentUser === null ? (
-                <BookmarkBorderIcon />
-              ) : currentUser.followedUsers?.includes(channel._id) ? (
-                <BookmarkIcon />
-              ) : (
-                <BookmarkBorderIcon onClick={handleFollow} />
-              )}
-            </Button>
-          </Buttons>
-        </Details>
-        <Channel>
-          <ChannelInfo>
-            <Image src={channel.profilePic} />
-            <ChannelDetails>
-              <ChannelName>
-                Uploaded by <Span>{channel.name}</Span>
-              </ChannelName>
-              <ChannelName>{channel.followers} Followers</ChannelName>
-            </ChannelDetails>
-          </ChannelInfo>
-        </Channel>
-        <VideoInfo>{currentVideo.info}</VideoInfo>
-      </Content>
-      <CommentsContainer>
-        <Comments videoId={currentVideo._id} />
-      </CommentsContainer>
+                <Button onClick={copyUrl}>
+                  {" "}
+                  {!copied ? "" : "Copied URL!"}
+                  <LinkIcon />
+                </Button>
+                <Button>
+                  {currentUser === null ? (
+                    <BookmarkBorderIcon />
+                  ) : currentUser.followedUsers?.includes(channel._id) ? (
+                    <BookmarkIcon />
+                  ) : (
+                    <BookmarkBorderIcon onClick={handleFollow} />
+                  )}
+                </Button>
+              </Buttons>
+            </Details>
+            <Channel>
+              <ChannelInfo>
+                <Image src={channel.profilePic} />
+                <ChannelDetails>
+                  <ChannelName>
+                    Uploaded by <Span>{channel.name}</Span>
+                  </ChannelName>
+                  <ChannelName>{channel.followers} Followers</ChannelName>
+                </ChannelDetails>
+              </ChannelInfo>
+            </Channel>
+            <VideoInfo>{currentVideo.info}</VideoInfo>
+          </Content>
+          <CommentsContainer>
+            <Comments videoId={currentVideo._id} />
+          </CommentsContainer>
+        </>
+      ) : (
+        <h1>No video to show</h1>
+      )}
     </Container>
   );
 };
