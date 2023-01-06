@@ -51,9 +51,14 @@ const Comments = ({ videoId }) => {
 
   const fetchComments = async () => {
     try {
-      await axios
-        .get(`/comments/${videoId}`)
-        .then((res) => setComments(res.data.comments));
+      await fetch(`http://localhost:8000/api/comments/${videoId}`, {
+        method: "GET",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => setComments(data.comments));
       console.log(comments).catch((err) => {
         console.log(err);
         toast.error(err.response.data.message);
@@ -64,13 +69,18 @@ const Comments = ({ videoId }) => {
     e.preventDefault();
 
     try {
-      axios
-        .post("/comments/", {
+      fetch("http://localhost:8000/api/comments/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
           userId: currentUser._id,
           videoId,
           content,
-        })
-        .then(() => fetchComments());
+        }),
+      }).then(() => fetchComments());
     } catch (error) {}
   };
 
@@ -82,8 +92,7 @@ const Comments = ({ videoId }) => {
     <Container>
       <NewComment>
         {!currentUser ? (
-          // <ProfilePic />
-          <></>
+          <h2>Login to add a comment</h2>
         ) : (
           <>
             <ProfilePic src={currentUser.profilePic} />
@@ -99,11 +108,15 @@ const Comments = ({ videoId }) => {
         )}
       </NewComment>
       <Scrollbar style={{ height: "74vh" }}>
-        <Wrapper>
-          {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment} />
-          ))}
-        </Wrapper>
+        {comments && comments.length > 0 ? (
+          <Wrapper>
+            {comments.map((comment) => (
+              <Comment key={comment._id} comment={comment} />
+            ))}
+          </Wrapper>
+        ) : (
+          <h3>No comments to show</h3>
+        )}
       </Scrollbar>
     </Container>
   );

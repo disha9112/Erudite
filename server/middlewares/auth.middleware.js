@@ -1,24 +1,25 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/user.model");
 
 const verifyToken = async (req, res, next) => {
-  const token = req.cookies.access_token;
+  const token = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
   if (!token) {
     return res.status(400).json({
       status: false,
-      message: "You are not authenticated",
+      message: "Invalid token",
     });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.status(400).json({
-        status: false,
-        message: "Invalid token",
-      });
-    }
-    req.user = user;
+  const userExists = await User.findOne({ email: token.email });
+  if (!userExists) {
+    return res.status(400).json({
+      status: false,
+      message: "User does not exist in database",
+    });
+  } else {
+    req.user = userExists;
     next();
-  });
+  }
 };
 
 module.exports = verifyToken;

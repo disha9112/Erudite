@@ -30,19 +30,16 @@ exports.login = async (req, res, next) => {
         const token = jwt.sign(
           {
             id: userExists._id,
+            email: userExists.email,
           },
           process.env.JWT_SECRET
         );
-        return res
-          .cookie("access_token", token, {
-            httpOnly: true,
-          })
-          .status(200)
-          .json({
-            status: true,
-            message: "Validation successful",
-            user: userExists,
-          });
+        return res.status(200).json({
+          status: true,
+          message: "Validation successful",
+          user: userExists,
+          token: token,
+        });
       } else {
         return res.status(400).json({
           status: false,

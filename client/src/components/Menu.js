@@ -102,6 +102,7 @@ const Menu = ({ theme, setTheme }) => {
   const handleLogout = async (e) => {
     e.preventDefault();
     dispatch(logOut({}));
+    localStorage.removeItem("token");
     navigate("/");
   };
 

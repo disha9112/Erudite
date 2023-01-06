@@ -17,17 +17,32 @@ const Search = () => {
 
   useEffect(() => {
     const fetchVideos = async () => {
-      const res = await axios.get(`/videos/search${search}`);
-      setVideos(res.data.searchedVideos);
+      const res = await fetch(
+        `http://localhost:8000/api/videos/search${search}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      const data = await res.json();
+      setVideos(data.searchedVideos);
     };
     fetchVideos();
   }, [search]);
 
   return (
     <Container>
-      {videos.map((video) => (
-        <Card key={video._id} video={video} />
-      ))}
+      {videos && videos.length > 0 ? (
+        videos.map((video) => (
+          <>
+            <Card key={video._id} video={video} />
+          </>
+        ))
+      ) : (
+        <h1>No video to show</h1>
+      )}
     </Container>
   );
 };

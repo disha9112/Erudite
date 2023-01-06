@@ -19,12 +19,25 @@ const Home = ({ type }) => {
 
   useEffect(() => {
     const fetchVideos = async () => {
-      axios.get(`/videos/${type}`).then((res) => setVideos(res.data.videos));
+      await fetch(`http://localhost:8000/api/videos/${type}`, {
+        method: "GET",
+        // headers: {
+        //   Authorization: localStorage.getItem("token"),
+        // },
+      })
+        .then((res) => res.json())
+        .then((data) => setVideos(data.videos));
+      // .catch((err) => console.log(err));
     };
     const fetchTagVideos = async () => {
-      axios
-        .get(`/videos/tag/${type}`)
-        .then((res) => setVideos(res.data.tagVideos));
+      fetch(`http://localhost:8000/api/videos/tag/${type}`, {
+        method: "GET",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => setVideos(data.tagVideos));
     };
 
     if (

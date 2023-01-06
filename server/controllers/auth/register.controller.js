@@ -33,19 +33,16 @@ exports.register = async (req, res, next) => {
       const token = jwt.sign(
         {
           id: newUser._id,
+          email: newUser.email,
         },
         process.env.JWT_SECRET
       );
-      return res
-        .cookie("access_token", token, {
-          httpOnly: true,
-        })
-        .status(200)
-        .json({
-          status: true,
-          message: "Registration successful",
-          user: newUser,
-        });
+      return res.status(200).json({
+        status: true,
+        message: "Registration successful",
+        user: newUser,
+        token: token,
+      });
     }
   } catch (error) {
     next(error);

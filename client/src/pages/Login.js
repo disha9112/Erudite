@@ -89,12 +89,21 @@ const Login = () => {
     dispatch(loginStart());
 
     try {
-      axios
-        .post("/auth/login", {
+      await fetch("http://localhost:8000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
           email,
           password,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          dispatch(loginSuccess(data.user));
+          localStorage.setItem("token", data.token);
         })
-        .then((res) => dispatch(loginSuccess(res.data.user)))
         .then(() => navigate("/"))
         .catch((err) => {
           console.log(err);

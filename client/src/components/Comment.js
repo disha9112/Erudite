@@ -35,9 +35,14 @@ const Comment = ({ comment }) => {
 
   useEffect(() => {
     const fetchCommentDetails = async () => {
-      await axios
-        .get(`/users/find/${comment.userId}`)
-        .then((res) => setChannel(res.data.fetchedUser));
+      await fetch(`http://localhost:8000/api/users/find/${comment.userId}`, {
+        method: "GET",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => setChannel(data.fetchedUser));
     };
     fetchCommentDetails();
   }, [comment.userId]);

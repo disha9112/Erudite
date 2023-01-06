@@ -154,8 +154,16 @@ const Create = ({ setOpen }) => {
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    await axios
-      .post("/videos/", { ...inputs })
+    await fetch(
+      "https://erudite-gpzx.onrender.com/api/videos/",
+      { ...inputs },
+      {
+        method: "POST",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    )
       .then((res) => {
         setOpen(false);
         setId(res.data.video._id);
@@ -165,7 +173,12 @@ const Create = ({ setOpen }) => {
         console.log(err);
         toast.error(err.response.data.message);
       });
-    await axios.put(`/videos/view/${id}`);
+    await fetch(`https://erudite-gpzx.onrender.com/api/videos/view/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    });
   };
 
   return (

@@ -146,9 +146,20 @@ const Register = () => {
       toast.error("Passwords don't match, try again");
     } else {
       try {
-        axios
-          .post("/auth/register", { ...inputs })
-          .then((res) => dispatch(loginSuccess(res.data.user)))
+        await fetch("http://localhost:8000/api/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...inputs,
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            dispatch(loginSuccess(data.user));
+            localStorage.setItem("token", data.token);
+          })
           .then(() => navigate("/"))
           .catch((err) => {
             console.log(err);

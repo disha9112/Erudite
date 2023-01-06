@@ -113,19 +113,30 @@ const Video = () => {
 
   const handleLike = async () => {
     if (currentUser._id) {
-      await axios
-        .put(`/users/like/${currentVideo._id}`)
+      await fetch(`http://localhost:8000/api/users/like/${currentVideo._id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+        // .then((res) => res.json())
         .then(() => dispatch(like(currentUser._id)));
     }
   };
   const handleFollow = async () => {
     currentUser.followedUsers.includes(channel._id)
-      ? await axios
-          .put(`/users/unfollow/${channel._id}`)
-          .then(() => dispatch(follow(channel._id)))
-      : await axios
-          .put(`/users/follow/${channel._id}`)
-          .then(() => dispatch(follow(channel._id)));
+      ? await fetch(`http://localhost:8000/api/users/unfollow/${channel._id}`, {
+          method: "PUT",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }).then(() => dispatch(follow(channel._id)))
+      : await fetch(`http://localhost:8000/api/users/follow/${channel._id}`, {
+          method: "PUT",
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }).then(() => dispatch(follow(channel._id)));
   };
   const copyUrl = () => {
     const element = document.createElement("input");
@@ -140,15 +151,38 @@ const Video = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const videoRes = await axios.get(`/videos/find/${path}`);
+        const videoRes = await fetch(
+          `http://localhost:8000/api/videos/find/${path}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        ).then((res) => res.json());
         // setVideo(videoRes.data.fetchedVideo);
-        const channelRes = await axios.get(
-          `/users/find/${videoRes.data.fetchedVideo.userId}`
-        );
-        setChannel(channelRes.data.fetchedUser);
-        dispatch(fetchSuccess(videoRes.data.fetchedVideo));
+        const channelRes = await fetch(
+          `http://localhost:8000/api/users/find/${videoRes.fetchedVideo.userId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        ).then((res) => res.json());
+        setChannel(channelRes.fetchedUser);
+        dispatch(fetchSuccess(videoRes.fetchedVideo));
+        console.log(videoRes.fetchedVideo);
 
-        await axios.put(`/videos/view/${videoRes.data.fetchedVideo._id}`);
+        await fetch(
+          `http://localhost:8000/api/videos/view/${videoRes.fetchedVideo._id}`,
+          {
+            method: "PUT",
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
       } catch (err) {}
     };
     fetchData();
